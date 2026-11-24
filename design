@@ -1,0 +1,475 @@
+Proposed website structure
+6 main pages or sections.
+Main page
+НИВЕЛМАН И ВИСИНСКИ СИСТЕМИ
+
+
+
+
+
+
+
+
+kaarwan.com
+
+
+Homepage content:
+- Short introduction to нивелман.
+- What is elevation and height difference?
+- Overview of the topics.
+- Navigation to the other sections.
+
+
+01. Основи на нивелманот
+
+
+
+
+
+
+
+
+usq.pressbooks.pub
+
+
+- Што е нивелман?
+- Принцип на мерење.
+- Видови нивелман.
+- Примена во геодезијата и градежништвото.
+
+
+02. Нивелир и опрема
+
+
+
+
+
+
+
+
+blacklight.ro
+
+
+- Оптички нивелир.
+- Дигитален нивелир.
+- Нивелманска летва.
+- Статив и дополнителна опрема.
+
+
+03. Висински разлики
+
+
+
+
+
+
+
+
+washingtonsurveyor.com
+
+
+- Што е висинска разлика?
+- Задно и предно читање.
+- Формули за пресметување.
+- Практични примери.
+
+
+04. Висински системи
+
+
+
+
+
+
+
+
+linkedin.com
+
+
+- Апсолутна и релативна висина.
+- Нулта висинска површина.
+- Средно морско ниво.
+- Референтни висински системи.
+
+
+05. Репери
+
+
+
+
+
+
+
+
+nationalparkstraveler.org
+
+
+- Што се репери?
+- Видови репери.
+- Стабилизација и означување.
+- Улога во висинската мрежа.
+
+
+06. Примери и квиз
+
+
+
+
+
+
+
+
+theconstructor.org
+
+
+- Решени задачи.
+- Интерактивна пресметка на висинска разлика.
+- Квиз за проверка на знаењето.
+
+
+2. Design direction
+I'd use a dark engineering-inspired design, but keep the actual educational content bright and readable.
+
+
+
+
+
+
+
+
+
+
+Dark navy / technical
+
+Navigation, headers, diagrams and background elements.
+
+
+
+
+
+
+
+
+
+
+
+White / educational
+
+Articles, formulas, tables and explanations.
+
+
+
+Suggested palette:
+Element	Color
+Main background	#101827
+Secondary background	#182438
+Accent blue	#38BDF8
+Highlight orange	#F59E0B
+Content background	#F8FAFC
+Text	#1E293B
+
+Some design details I'd include:
+- Topographic contour lines as subtle background graphics.
+- Technical drawings of surveying equipment.
+- Formula cards.
+- Measurement diagrams with labeled points.
+- Smooth scrolling and subtle animations.
+- Responsive navigation for mobile.
+3. Important educational content
+These are the technical concepts I'd make sure you cover.
+A. Основи на нивелманот
+Explain that нивелман is a surveying method used to determine height differences between points.
+
+Include:
+- Геометриски нивелман.
+- Тригонометриски нивелман.
+- Барометриски нивелман.
+B. Нивелир и опрема
+Explain the purpose of each component.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+7
+
+
+
+
+
+
+
+
+
+
+
+C. Висински разлики
+This is probably one of the most important sections.
+
+For differential leveling, introduce the formula:
+\[
+\Delta h = B - F
+\]
+
+Where:
+- \(B\) = задна визура (backsight).
+- \(F\) = предна визура (foresight).
+- \(\Delta h\) = висинска разлика.
+The new point's elevation is:
+\[
+H_B = H_A + B - F
+\]
+
+Example:
+- Known elevation: \(H_A=250.000m\)
+- Backsight: \(B=1.425m\)
+- Foresight: \(F=0.875m\)
+\[
+H_B=250+1.425-0.875
+\]
+
+\[
+\boxed{H_B=250.550m}
+\]
+
+D. Висински системи
+Explain:
+- Референтна површина.
+- Средно морско ниво.
+- Геоид.
+- Елипсоидна висина.
+- Ортометриска висина.
+- Вертикален датум.
+One important distinction: a vertical datum defines the reference used for elevations; it is not simply the physical sea surface at any given moment. 
+Vertical Datums+1
+
+E. Репери
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+8
+
+
+
+
+
+
+
+
+
+
+
+Cover:
+- Дефиниција на репер.
+- Основни видови.
+- Трајни и привремени репери.
+- Како се користат при нивелман.
+- Зошто се важни за висинските мрежи.
+A benchmark is a fixed reference point with an established or assumed elevation. 
+National Engineering Handbook+1
+
+4. JavaScript functionality
+This is where I'd make your website stand out from a regular student project.
+
+I'd implement three interactive features.
+01. Height difference calculator
+Recommended
+
+Users enter backsight and foresight readings and receive the calculated height difference.
+Задна визура (B)
+
+Предна визура (F)
+
+
+Висинска разлика (Δh)0.550 m
+Втората точка е повисока.
+
+Interactive demonstration. Formula: Δh = B − F.
+
+02. Interactive нивелман diagram
+
+
+
+
+
+
+
+
+storage.googleapis.com
+
+
+Users click on different parts of the diagram to learn what each component does.
+
+03. Knowledge quiz
+- Multiple-choice questions.
+- Immediate feedback.
+- Score counter.
+- Final result.
+
+5. Technical project structure
+Keep it simple. I'd use a multi-page static website.
+
+nivelman-website/
+│
+├── index.html
+│
+├── pages/
+│   ├── osnovi.html
+│   ├── niveliр.html
+│   ├── visinski-razliki.html
+│   ├── visinski-sistemi.html
+│   ├── reperi.html
+│   └── kviz.html
+│
+├── css/
+│   ├── style.css
+│   ├── responsive.css
+│   └── components.css
+│
+├── js/
+│   ├── main.js
+│   ├── calculator.js
+│   └── quiz.js
+│
+├── assets/
+│   ├── images/
+│   ├── diagrams/
+│   └── icons/
+│
+└── README.md
+
+
+
+What goes where?
+File	Responsibility
+index.html	Homepage
+pages/	Educational sections
+style.css	Global design
+responsive.css	Mobile/tablet layouts
+components.css	Cards, buttons, diagrams
+main.js	Navigation and general interactions
+calculator.js	Height calculations
+quiz.js	Quiz functionality
+assets/	Images and illustrations
+
+No database is necessary. You can host the finished project as a static website.
+6. Resources for research and content
+I'd use these as your primary research sources rather than relying on random blogs.
+
+1. NOAA – Geodetic Leveling
+Highly recommended
+Detailed explanations of geodetic leveling, benchmarks, orthometric heights and measurement procedures.
+Read NOAA documentation
+
+
+
+2. Geodetic Leveling Manual
+
+A comprehensive technical manual covering leveling procedures, equipment, benchmarks and measurement errors.
+Read the technical manual (PDF)
+
+
+
+3. NOAA – Vertical Datums
+
+Useful for understanding vertical reference systems and different types of elevation.
+Explore vertical datums
+
+
+
+4. USDA – Surveying Handbook
+
+Contains explanations and diagrams of differential leveling, turning points, backsight and foresight.
+Read surveying chapter
+
+
+
+5. North Carolina Geodetic Survey
+
+Useful illustrations explaining differential and trigonometric leveling.
+Explore leveling diagrams (PDF)
+
+
+One important thing: These are international references, not necessarily the official vertical reference system used in North Macedonia. For the local section, try to obtain information about the Macedonian national height reference system from the Agency for Real Estate Cadastre (Агенција за катастар на недвижности).
+7. Where should the website be hosted?
+For this assignment, I'd choose one of these:
+Platform	Purpose
+GitHub Pages	Free static website hosting
+Netlify	Easy deployment and hosting
+Vercel	Alternative static hosting
+Local computer	Development and demonstration
+
+My recommendation: develop locally in VS Code, keep the project in GitHub, and deploy through GitHub Pages.
+8. Development roadmap
+I'd build it in this order:
+1. Project foundation
+   
+   Create folders, HTML pages, navigation and global CSS.
+2. Homepage and design
+   
+   Create the header, hero section, introduction and topic cards.
+3. Educational content
+   
+   Add all five technical topics, diagrams, formulas and examples.
+4. JavaScript functionality
+   
+   Implement the height calculator, interactive diagrams and quiz.
+5. Final polish
+   
+   Responsive design, animations, accessibility and testing.
+6. Deployment
+   
+   Publish the finished website.
+
+My recommendation
+I'd aim for a website with:
+- 6 navigation sections.
+- 5 educational topics.
+- At least 5–8 technical illustrations.
+- One working height-difference calculator.
+- One interactive quiz.
+- A responsive layout.
+- References and sources at the bottom of the website.
+That would make it a solid, complete educational project without unnecessarily complicating the technology.
+
+One thing I'd like to establish before we start coding:
+
+Do you have to submit a website with separate HTML pages, or is a single-page website with navigation between sections acceptable?
+
+If there are no restrictions, I'd personally choose the multi-page approach above. It gives the educational material a much cleaner structure.
