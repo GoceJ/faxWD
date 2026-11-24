@@ -1,0 +1,359 @@
+You can absolutely do that. However, since you've decided on a single-page website, you don't actually need a router that loads separate HTML pages.
+
+I'd recommend building a very lightweight hash-based router. It will give you URLs like:
+localhost:5500/#/
+localhost:5500/#/osnovi
+localhost:5500/#/nivелир
+localhost:5500/#/visinski-sistemi
+localhost:5500/#/reperi
+
+
+The navbar stays in place, and JavaScript switches the content inside the main container.
+1. Architecture
+Think of it like a simplified Vue application:
+index.html
+
+Application entry point
+
+
+Shared layout
+Navbar
+Always visible
+Main content (#app)
+Changes depending on the route
+Footer
+Always visible
+
+Router decides what to render
+Home
+
+
+Основи
+
+
+Нивелир
+
+
+Висински системи
+
+
+Репери
+
+
+Квиз
+
+
+
+
+2. Project structure
+I'd organize it like this:
+nivelman/
+│
+├── index.html
+│
+├── css/
+│   └── style.css
+│
+├── js/
+│   ├── app.js
+│   ├── router.js
+│   │
+│   └── pages/
+│       ├── home.js
+│       ├── osnovi.js
+│       ├── nivelir.js
+│       ├── visinski-sistemi.js
+│       ├── reperi.js
+│       └── quiz.js
+│
+└── assets/
+    ├── images/
+    └── icons/
+
+
+Each page is a JavaScript module returning HTML. Your router decides which module to render.
+3. Let's build the router
+This is the interesting part.
+
+index.html
+
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Нивелман и висински системи</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="#/" class="logo">НИВЕЛМАН</a>
+
+        <nav>
+            <a href="#/">Почетна</a>
+            <a href="#/osnovi">Основи</a>
+            <a href="#/nivelir">Нивелир</a>
+            <a href="#/visinski-sistemi">Висински системи</a>
+            <a href="#/reperi">Репери</a>
+            <a href="#/quiz">Квиз</a>
+        </nav>
+    </header>
+
+    <main id="app"></main>
+
+    <footer>
+        <p>Нивелман и висински системи</p>
+    </footer>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
+
+
+
+Notice that the navbar and footer are outside #app.
+
+That means the router never replaces them.
+4. Create the router
+js/router.js
+
+const routes = {
+    "/": () => import("./pages/home.js"),
+    "/osnovi": () => import("./pages/osnovi.js"),
+    "/nivelir": () => import("./pages/nivelir.js"),
+    "/visinski-sistemi": () => import("./pages/visinski-sistemi.js"),
+    "/reperi": () => import("./pages/reperi.js"),
+    "/quiz": () => import("./pages/quiz.js")
+};
+
+export async function navigate() {
+    const path = window.location.hash.slice(1) || "/";
+    const app = document.getElementById("app");
+
+    const loadPage = routes[path];
+
+    if (!loadPage) {
+        app.innerHTML = "<h1>404 - Страницата не постои</h1>";
+        return;
+    }
+
+    try {
+        const module = await loadPage();
+
+        app.innerHTML = module.default();
+
+        // Update active navigation link
+        document.querySelectorAll(".navbar nav a").forEach(link => {
+            link.classList.toggle(
+                "active",
+                link.getAttribute("href") === `#${path}`
+            );
+        });
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+
+    } catch (error) {
+        console.error(error);
+        app.innerHTML = "<h1>Грешка при вчитување на страницата.</h1>";
+    }
+}
+
+
+
+js/app.js
+
+import { navigate } from "./router.js";
+
+// Listen for URL changes
+window.addEventListener("hashchange", navigate);
+
+// Load initial page
+navigate();
+
+
+
+That's your router. Pretty small, right?
+5. Create individual pages
+For example:
+
+js/pages/home.js
+
+export default function Home() {
+    return `
+        <section class="hero">
+            <span>ГЕОДЕЗИЈА / НИВЕЛМАН</span>
+
+            <h1>
+                Нивелман и<br>
+                <span>висински системи</span>
+            </h1>
+
+            <p>
+                Запознајте се со методите за мерење
+                висински разлики, нивелманската опрема
+                и висинските референтни системи.
+            </p>
+
+            <a href="#/osnovi" class="button">
+                Започни со учење
+            </a>
+        </section>
+    `;
+}
+
+
+
+js/pages/osnovi.js
+
+export default function Osnovi() {
+    return `
+        <section class="content">
+            <h1>Основи на нивелманот</h1>
+
+            <p>
+                Нивелманот претставува геодетска
+                постапка за определување висински
+                разлики помеѓу точки на теренот.
+            </p>
+        </section>
+    `;
+}
+
+
+
+You repeat this pattern for the other pages.
+
+The important thing is that each page exports a function returning HTML.
+6. Basic styling
+css/style.css
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f8fafc;
+    color: #1e293b;
+}
+
+.navbar {
+    height: 75px;
+    padding: 0 6%;
+    background: #101827;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    color: #38bdf8;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.navbar nav {
+    display: flex;
+    gap: 25px;
+}
+
+.navbar nav a {
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.navbar nav a:hover,
+.navbar nav a.active {
+    color: #38bdf8;
+}
+
+#app {
+    min-height: 80vh;
+}
+
+.hero {
+    padding: 120px 8%;
+    background: #182438;
+    color: white;
+}
+
+.hero h1 {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    margin: 25px 0;
+}
+
+.hero h1 span {
+    color: #38bdf8;
+}
+
+.hero p {
+    max-width: 600px;
+    line-height: 1.8;
+    color: #cbd5e1;
+}
+
+.button {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 14px 25px;
+    background: #38bdf8;
+    color: #101827;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.content {
+    max-width: 1100px;
+    margin: auto;
+    padding: 80px 25px;
+}
+
+.content h1 {
+    margin-bottom: 25px;
+}
+
+footer {
+    padding: 30px;
+    text-align: center;
+    background: #101827;
+    color: #cbd5e1;
+}
+
+
+
+7. How it works
+Let's say you click:
+
+Висински системи
+
+Here's what happens:
+1. Browser changes URL to #/visinski-sistemi.
+2. JavaScript detects the hashchange event.
+3. Router finds /visinski-sistemi in its routes object.
+4. Router imports visinski-sistemi.js.
+5. The exported function generates the page HTML.
+6. Only #app gets replaced.
+7. Navbar and footer remain untouched.
+Result
+ You have a basic SPA (Single Page Application) without a framework.
+
+8. A few improvements I'd consider
+Once the basic router works, you can add:
+- A mobile hamburger menu.
+- Page transition animations.
+- Breadcrumb navigation.
+- Active navigation states.
+- A 404 page.
+- Scroll restoration.
+- A loading indicator while importing modules.
+One technical note: because we're using JavaScript modules and dynamic imports, run the project through VS Code Live Server or another local HTTP server. Don't open index.html directly through file://.
+
+My suggestion: Let's build this foundation first, test that navigation works, and then develop the actual geodesy content page by page. This way you'll understand the architecture instead of ending up with one enormous HTML file.
